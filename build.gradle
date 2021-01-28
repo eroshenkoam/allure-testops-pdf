@@ -3,8 +3,8 @@ plugins {
     id 'application'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group 'io.github.eroshenkoam.allure'
+description 'Allure TestOps PDF'
 
 application {
     mainClassName = "io.github.eroshenkoam.allure.AllureTestOpsPDF"
