@@ -13,6 +13,7 @@ application {
 repositories {
     mavenCentral()
     mavenLocal()
+    maven { url: "https://dl.bintray.com/qameta/maven-unstable/" }
 }
 
 dependencies {
