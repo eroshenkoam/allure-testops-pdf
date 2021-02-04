@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="meta" type="io.github.eroshenkoam.allure.dto.ReportMeta" -->
 <#-- @ftlvariable name="tree" type="io.github.eroshenkoam.allure.dto.ResultTree" -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,12 +6,9 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"/>
     <style>
         .tree-group {
-            display: block;
-            padding-bottom: 5px;
         }
 
         .tree-group__name {
-            display: inline;
         }
 
         .tree-group__status {
@@ -18,12 +16,9 @@
         }
 
         .tree-leaf {
-            display: block;
-            padding-bottom: 5px;
         }
 
         .tree-leaf__name {
-            display: inline;
         }
 
         .tree-leaf__status {
@@ -74,11 +69,25 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
+            <h1>Overview</h1>
+            <dl>
+                <dt>Name</dt>
+                <dd>${meta.name}</dd>
+                <dt>Created Date</dt>
+                <dd>${meta.createdDate?datetime}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
             <h1>Summary</h1>
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col" style="width: 50%">Name</th>
+                    <th scope="col" style="width: 80%">Name</th>
                     <th scope="col">Passed</th>
                     <th scope="col">Failed</th>
                     <th scope="col">Broken</th>
@@ -89,10 +98,18 @@
                 <#list tree.groups as group>
                     <tr>
                         <td>${group.name}</td>
-                        <td>${group.passed}</td>
-                        <td>${group.failed}</td>
-                        <td>${group.broken}</td>
-                        <td>${group.skipped}</td>
+                        <td>
+                            <span class="label label-passed">${group.passed}</span>
+                        </td>
+                        <td>
+                            <span class="label label-failed">${group.failed}</span>
+                        </td>
+                        <td>
+                            <span class="label label-broken">${group.broken}</span>
+                        </td>
+                        <td>
+                            <span class="label label-skipped">${group.skipped}</span>
+                        </td>
                     </tr>
                 </#list>
                 </tbody>
@@ -105,49 +122,57 @@
     <div class="row">
         <div class="col-sm">
             <h1>Details</h1>
-            <@treeGroups tree.groups/>
-            <@treeLeaves tree.leaves/>
+            <table class="table">
+                <thead>
+                <th style="width: 80%;">Name</th>
+                <th style="width: 20%">Status</th>
+                </thead>
+                <tbody>
+                <@treeGroups tree.groups 0/>
+                <@treeLeaves tree.leaves 0/>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 </body>
 </html>
 
-<#macro treeGroups groups>
+<#macro treeGroups groups level>
     <#list groups as group>
-        <ul>
-            <li>
-                <div class="tree-group">
-                    <div class="tree-group__name">
-                        <span class="tree-group__name">${group.name?html}</span>
-                    </div>
-                    <div class="tree-group__status">
-                        <span class="label label-passed">${group.passed}</span>
-                        <span class="label label-failed">${group.failed}</span>
-                        <span class="label label-broken">${group.broken}</span>
-                        <span class="label label-skipped">${group.skipped}</span>
-                    </div>
+        <tr class="tree-group">
+            <td>
+                <div class="tree-group__name" style="padding-left: ${level*20}px">
+                    ${group.name?html}
                 </div>
-                <div class="tree-child">
-                    <@treeGroups group.groups/>
-                    <@treeLeaves group.leaves/>
+            </td>
+            <td>
+                <div class="tree-group__status">
+                    <span class="label label-passed">${group.passed}</span>
+                    <span class="label label-failed">${group.failed}</span>
+                    <span class="label label-broken">${group.broken}</span>
+                    <span class="label label-skipped">${group.skipped}</span>
                 </div>
-            </li>
-        </ul>
+            </td>
+        </tr>
+        <@treeGroups group.groups level+1/>
+        <@treeLeaves group.leaves level+1/>
     </#list>
 </#macro>
 
-<#macro treeLeaves leaves>
+<#macro treeLeaves leaves level>
     <#list leaves as leaf>
-        <ul>
-            <li>
-                <div class="tree-leaf">
-                    <div class="tree-leaf__name">${leaf.name?html}</div>
-                    <div class="tree-leaf__status">
-                        <span class="label label-${leaf.status}">${leaf.status}</span>
-                    </div>
+        <tr class="tree-leaf">
+            <td>
+                <div class="tree-leaf__name" style="padding-left: ${level*20}px">
+                    ${leaf.name?html}
                 </div>
-            </li>
-        </ul>
+            </td>
+            <td>
+                <div class="tree-leaf__status">
+                    <span class="label label-${leaf.status}">${leaf.status}</span>
+                </div>
+            </td>
+        </tr>
     </#list>
 </#macro>
