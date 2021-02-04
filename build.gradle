@@ -23,7 +23,7 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen:4.1.4")
     implementation("info.picocli:picocli:4.1.4")
 
-    implementation('io.qameta.allure:allure-ee-client:3.38.2')
+    implementation('io.qameta.allure:allure-ee-client:3.38.3')
     implementation('org.freemarker:freemarker:2.3.30')
 
     implementation("com.openhtmltopdf:openhtmltopdf-core:1.0.4")
