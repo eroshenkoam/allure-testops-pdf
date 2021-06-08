@@ -17,6 +17,8 @@ import picocli.CommandLine;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,6 +72,13 @@ public class ExportCommand implements Runnable {
     protected String search;
 
     @CommandLine.Option(
+            names = {"--format"},
+            description = "Export format (PDF, HTML)",
+            defaultValue = "PDF"
+    )
+    protected ExportFormat format;
+
+    @CommandLine.Option(
             names = {"--output-file"},
             description = "Export output directory",
             defaultValue = "./report.pdf"
@@ -98,7 +107,17 @@ public class ExportCommand implements Runnable {
         parameters.put("tree", tree);
 
         final String html = FreemarkerUtils.render("report.ftl", parameters);
-        PDFUtils.saveToFile(html, outputPath.toString());
+        switch (format) {
+            case PDF: {
+                PDFUtils.saveToFile(html, outputPath.toString());
+                break;
+            }
+            case HTML: {
+                Files.write(outputPath, html.getBytes(StandardCharsets.UTF_8));
+                break;
+            }
+        }
+
     }
 
     private ReportMeta getReportData(final Long launchId,
