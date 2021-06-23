@@ -72,7 +72,7 @@
             <h1>Overview</h1>
             <dl>
                 <dt>Name</dt>
-                <dd><![CDATA["${meta.name}"]]></dd>
+                <dd><![CDATA[${meta.name}]]></dd>
                 <dt>Created Date</dt>
                 <dd>${meta.createdDate?datetime}</dd>
             </dl>
@@ -97,7 +97,7 @@
                 <tbody>
                 <#list tree.groups as group>
                     <tr>
-                        <td><![CDATA["${group.name}"]]></td>
+                        <td><![CDATA[${group.name}]]></td>
                         <td>
                             <span class="label label-passed">${group.passed}</span>
                         </td>
@@ -143,7 +143,7 @@
         <tr class="tree-group">
             <td>
                 <div class="tree-group__name" style="padding-left: ${level*20}px">
-                    <![CDATA["${group.name?html}"]]>
+                    <![CDATA[${group.name?html}]]>
                 </div>
             </td>
             <td>
@@ -165,7 +165,7 @@
         <tr class="tree-leaf">
             <td>
                 <div class="tree-leaf__name" style="padding-left: ${level*20}px">
-                    <![CDATA["${leaf.name?html}"]]>
+                    <![CDATA[${leaf.name?html}]]>
                 </div>
             </td>
             <td>
