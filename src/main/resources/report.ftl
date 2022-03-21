@@ -1,5 +1,6 @@
 <#-- @ftlvariable name="meta" type="io.github.eroshenkoam.allure.dto.ReportMeta" -->
 <#-- @ftlvariable name="tree" type="io.github.eroshenkoam.allure.dto.ResultTree" -->
+<#-- @ftlvariable name="config" type="io.github.eroshenkoam.allure.config.Config" -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -38,12 +39,11 @@
             border: 1px solid #4c4c4c;
             cursor: default;
             text-decoration: none;
-        }
-
-        .label-passed {
-            background: #97cc64;
             color: #000;
             fill: #000;
+        }
+
+        .label-passed {;
         }
 
         .label-failed {
@@ -99,16 +99,20 @@
                     <tr>
                         <td><![CDATA[${group.name}]]></td>
                         <td>
-                            <span class="label label-passed">${group.passed}</span>
+                            <span class="label"
+                                  style="background: ${config.statusColor["passed"]}">${group.passed}</span>
                         </td>
                         <td>
-                            <span class="label label-failed">${group.failed}</span>
+                            <span class="label"
+                                  style="background: ${config.statusColor["failed"]}">${group.failed}</span>
                         </td>
                         <td>
-                            <span class="label label-broken">${group.broken}</span>
+                            <span class="label"
+                                  style="background: ${config.statusColor["broken"]}">${group.broken}</span>
                         </td>
                         <td>
-                            <span class="label label-skipped">${group.skipped}</span>
+                            <span class="label"
+                                  style="background: ${config.statusColor["skipped"]}">${group.skipped}</span>
                         </td>
                     </tr>
                 </#list>
@@ -148,10 +152,10 @@
             </td>
             <td>
                 <div class="tree-group__status">
-                    <span class="label label-passed">${group.passed}</span>
-                    <span class="label label-failed">${group.failed}</span>
-                    <span class="label label-broken">${group.broken}</span>
-                    <span class="label label-skipped">${group.skipped}</span>
+                    <span class="label" style="background: ${config.statusColor["passed"]}">${group.passed}</span>
+                    <span class="label" style="background: ${config.statusColor["failed"]}">${group.failed}</span>
+                    <span class="label" style="background: ${config.statusColor["broken"]}">${group.broken}</span>
+                    <span class="label" style="background: ${config.statusColor["skipped"]}">${group.skipped}</span>
                 </div>
             </td>
         </tr>
@@ -170,7 +174,7 @@
             </td>
             <td>
                 <div class="tree-leaf__status">
-                    <span class="label label-${leaf.status}">${leaf.status}</span>
+                    <span class="label" style="background: ${config.statusColor[leaf.status]}">${leaf.status}</span>
                 </div>
             </td>
         </tr>

@@ -1,5 +1,7 @@
 package io.github.eroshenkoam.allure.export;
 
+import io.github.eroshenkoam.allure.config.Config;
+import io.github.eroshenkoam.allure.config.StatusColor;
 import io.github.eroshenkoam.allure.dto.ReportMeta;
 import io.github.eroshenkoam.allure.dto.ResultTree;
 import io.github.eroshenkoam.allure.dto.ResultTreeGroup;
@@ -85,6 +87,9 @@ public class ExportCommand implements Runnable {
     )
     protected Path outputPath;
 
+    @CommandLine.ArgGroup
+    protected StatusColor statusColor = new StatusColor();
+
     @Override
     public void run() {
         try {
@@ -106,6 +111,7 @@ public class ExportCommand implements Runnable {
         final ResultTree tree = getTree(launchId, treeId, search, testResultTreeService);
         parameters.put("tree", tree);
 
+        parameters.put("config", createConfig());
         final String html = FreemarkerUtils.render("report.ftl", parameters);
         switch (format) {
             case PDF: {
@@ -197,6 +203,15 @@ public class ExportCommand implements Runnable {
         return new ResultTreeLeaf()
                 .setName(leaf.getName())
                 .setStatus(leaf.getStatus().value());
+    }
+
+    private Config createConfig() {
+        final Map<String, String> colors = new HashMap<>();
+        colors.put("passed", statusColor.getPassed());
+        colors.put("failed", statusColor.getFailed());
+        colors.put("broken", statusColor.getBroken());
+        colors.put("skipped", statusColor.getSkipped());
+        return new Config().setStatusColor(colors);
     }
 
 }
